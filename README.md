@@ -59,14 +59,13 @@ Some of the checklists in this doc are for **C4 (🐺)** and some of them are fo
 ---
 
 # Coinbase audit details
-- Total Prize Pool: $36300 in USDC
-  - HM awards: $26250 in USDC
- 
+- Total Prize Pool: $36,300 in USDC
+  - HM awards: $26,250 in USDC
   - QA awards: $750 in USDC
-  - Bot Race awards: $2250 in USDC
+  - Bot Race awards: $2,250 in USDC
   - Gas awards: $750 in USDC
-  - Judge awards: $3600 in USDC
-  - Lookout awards: XXX XXX USDC (Notion: Sum of Pre-sort fee + Pre-sort early bonus)
+  - Judge awards: $3,600 in USDC
+  - Lookout awards: $2,200 in USDC 
   - Scout awards: $500 in USDC
  
 - Join [C4 Discord](https://discord.gg/code4rena) to register
