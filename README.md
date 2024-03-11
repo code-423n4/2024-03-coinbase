@@ -31,9 +31,10 @@
 
 # Coinbase audit details
 - Total Prize Pool: $49,000 in USDC
-  - HM awards: $26,250 in USDC 
+  - HM awards: $24,750 in USDC 
   - QA awards: $750 in USDC
   - Bot Race awards: $2,250 in USDC
+  - Analysis awards: $1,500 in USDC
   - Gas awards: $750 in USDC
   - Judge awards: $5,600 in USDC
   - Lookout awards: $2,400 in USDC
