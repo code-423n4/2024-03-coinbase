@@ -30,14 +30,15 @@
 ---
 
 # Coinbase audit details
-- Total Prize Pool: $36,500 in USDC
+- Total Prize Pool: $49,000 in USDC
   - HM awards: $26,750 in USDC 
   - QA awards: $750 in USDC
   - Bot Race awards: $2,250 in USDC
   - Gas awards: $750 in USDC
-  - Judge awards: $3,600 in USDC
+  - Judge awards: $5,600 in USDC
   - Lookout awards: $2,200 in USDC
   - Scout awards: $500 in USDC
+  - Mitigation Review: $10,500 in USDC (Opportunity goes to top 3 certified wardens based on placement in this audit.)
  
 - Join [C4 Discord](https://discord.gg/code4rena) to register
 - Submit findings [using the C4 form](https://code4rena.com/contests/2024-03-coinbase/submit)
