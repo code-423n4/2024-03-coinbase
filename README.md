@@ -42,8 +42,8 @@
 - Join [C4 Discord](https://discord.gg/code4rena) to register
 - Submit findings [using the C4 form](https://code4rena.com/contests/2024-03-coinbase/submit)
 - [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
-- Starts March 13, 2024 20:00 UTC
-- Ends March 20, 2024 20:00 UTC
+- Starts March 14, 2024 20:00 UTC
+- Ends March 21, 2024 20:00 UTC
 
 ## Automated Findings / Publicly Known Issues
 
