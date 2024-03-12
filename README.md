@@ -47,8 +47,14 @@ This audit covers four separate but related groups of code
 ## Links
 
 - **Previous audits:** 
-TODO
-- Coinbase completed an audit of FreshCryptoLib with artifacts [here](https://github.com/base-org/FCL-ecdsa-verify-audit/tree/main).
+- SmartWallet
+  - TODO
+- WebAuthnSol
+  - [Cantina](https://github.com/base-org/webauthn-sol/blob/main/audits/report-review-coinbase-webauthn.pdf)
+- FreshCryptoLib
+  - Coinbase completed an audit of FreshCryptoLib with artifacts [here](https://github.com/base-org/FCL-ecdsa-verify-audit/tree/main).
+- MagicSpend
+  - [Cantina](https://github.com/coinbase/magic-spend/blob/main/audit/report-review-coinbase-magicspend.pdf)
 - **Documentation:** Each folder has a detailed README. Please read those. 
 
 
