@@ -116,13 +116,13 @@ The complete scope of this audit is the files included in `src/`
 
 ## Attack ideas (Where to look for bugs)
 - SmartWallet
-  - Can an move funds from the account?
+  - Can an attacker move funds from the account?
   - Can an attacker brick (make unusable) the account?
   - Can functions not in `canSkipChainIdValidation` be used via `executeWithoutChainIdValidation`?
 - MagicSpend
-  - Can attacker withdraw using an invalid WithdrawRequest?
+  - Can an attacker withdraw using an invalid WithdrawRequest?
   - Can an attacker be credited more than WithdrawRequest.amount?
-  - Are there any griefing attacks that could cause this paymaster to be banned?
+  - Are there any griefing attacks that could cause this paymaster to be banned by bundlers?
 - WebAuthn
   - False positive or false negative in validation
     - Are there valid webauthn authentication assertions that do not pass our validation?
