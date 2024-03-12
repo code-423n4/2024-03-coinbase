@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {Base64Url} from "FreshCryptoLib/utils/Base64Url.sol";
+import {Base64} from "openzeppelin-contracts/contracts/utils/Base64.sol";
 
 struct WebAuthnInfo {
     bytes authenticatorData;
@@ -11,7 +11,7 @@ struct WebAuthnInfo {
 
 library Utils {
     function getWebAuthnStruct(bytes32 challenge) public pure returns (WebAuthnInfo memory) {
-        string memory challengeb64url = Base64Url.encode(abi.encode(challenge));
+        string memory challengeb64url = Base64.encodeURL(abi.encode(challenge));
         string memory clientDataJSON = string(
             abi.encodePacked(
                 '{"type":"webauthn.get","challenge":"',

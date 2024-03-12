@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {FCL_ecdsa} from "FreshCryptoLib/FCL_ecdsa.sol";
-import {FCL_Elliptic_ZZ} from "FreshCryptoLib/FCL_elliptic.sol";
+import {FCL} from "../../src/FreshCryptoLib/FCL.sol";
 
 import {WebAuthn} from "../../src/WebAuthnSol/WebAuthn.sol";
 
@@ -13,7 +12,7 @@ contract WebAuthnFuzzTest is Test {
 
     string constant testFile = "/test/WebAuthnSol/fixtures/assertions_fixture.json";
 
-    uint256 private constant P256_N_DIV_2 = FCL_Elliptic_ZZ.n / 2;
+    uint256 private constant P256_N_DIV_2 = FCL.n / 2;
 
     /// @dev `WebAuthn.verify` should return `false` when `s` is above P256_N_DIV_2.
     function test_Verify_ShoulReturnFalse_WhenSAboveP256_N_DIV_2() public {
@@ -36,7 +35,7 @@ contract WebAuthnFuzzTest is Test {
 
             // Only interested in s > P256_N_DIV_2 cases.
             if (webAuthnAuth.s <= P256_N_DIV_2) {
-                webAuthnAuth.s = FCL_ecdsa.n - webAuthnAuth.s;
+                webAuthnAuth.s = FCL.n - webAuthnAuth.s;
             }
 
             bool res = WebAuthn.verify({challenge: challenge, requireUV: uv, webAuthnAuth: webAuthnAuth, x: x, y: y});
@@ -69,7 +68,7 @@ contract WebAuthnFuzzTest is Test {
 
             // Only interested in s <= P256_N_DIV_2 case
             if (webAuthnAuth.s > P256_N_DIV_2) {
-                webAuthnAuth.s = FCL_ecdsa.n - webAuthnAuth.s;
+                webAuthnAuth.s = FCL.n - webAuthnAuth.s;
             }
 
             // Unset the `up` flag.
@@ -110,7 +109,7 @@ contract WebAuthnFuzzTest is Test {
             }
 
             if (webAuthnAuth.s > P256_N_DIV_2) {
-                webAuthnAuth.s = FCL_ecdsa.n - webAuthnAuth.s;
+                webAuthnAuth.s = FCL.n - webAuthnAuth.s;
             }
 
             bool res = WebAuthn.verify({
@@ -151,7 +150,7 @@ contract WebAuthnFuzzTest is Test {
 
             // Only interested in s <= P256_N_DIV_2 cases
             if (webAuthnAuth.s > P256_N_DIV_2) {
-                webAuthnAuth.s = FCL_ecdsa.n - webAuthnAuth.s;
+                webAuthnAuth.s = FCL.n - webAuthnAuth.s;
             }
 
             bool res = WebAuthn.verify({challenge: challenge, requireUV: uv, webAuthnAuth: webAuthnAuth, x: x, y: y});

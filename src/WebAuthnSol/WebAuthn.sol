@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {FCL_ecdsa} from "FreshCryptoLib/FCL_ecdsa.sol";
-import {FCL_Elliptic_ZZ} from "FreshCryptoLib/FCL_elliptic.sol";
+import {FCL} from "../FreshCryptoLib/FCL.sol";
 import {Base64} from "openzeppelin-contracts/contracts/utils/Base64.sol";
 import {LibString} from "solady/utils/LibString.sol";
 
@@ -45,7 +44,7 @@ library WebAuthn {
     bytes1 private constant AUTH_DATA_FLAGS_UV = 0x04;
 
     /// @dev Secp256r1 curve order / 2 used as guard to prevent signature malleability issue.
-    uint256 private constant P256_N_DIV_2 = FCL_Elliptic_ZZ.n / 2;
+    uint256 private constant P256_N_DIV_2 = FCL.n / 2;
 
     /// @dev The precompiled contract address to use for signature verification in the “secp256r1” elliptic curve.
     ///      See https://github.com/ethereum/RIPs/blob/master/RIPS/rip-7212.md.
@@ -158,6 +157,6 @@ library WebAuthn {
         bool valid = ret.length > 0;
         if (success && valid) return abi.decode(ret, (uint256)) == 1;
 
-        return FCL_ecdsa.ecdsa_verify(messageHash, webAuthnAuth.r, webAuthnAuth.s, x, y);
+        return FCL.ecdsa_verify(messageHash, webAuthnAuth.r, webAuthnAuth.s, x, y);
     }
 }

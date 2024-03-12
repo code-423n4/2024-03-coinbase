@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {Test, console2} from "forge-std/Test.sol";
 import {WebAuthn} from "../../src/WebAuthnSol/WebAuthn.sol";
-import {Base64Url} from "FreshCryptoLib/utils/Base64Url.sol";
+import {Base64} from "openzeppelin-contracts/contracts/utils/Base64.sol";
 
 contract WebAuthnTest is Test {
     bytes challenge = abi.encode(0xf631058a3ba1116acce12396fad0a125b5041c43f8e15723709f81aa8d5f4ccf);
@@ -14,7 +14,7 @@ contract WebAuthnTest is Test {
         WebAuthn.WebAuthnAuth memory auth = WebAuthn.WebAuthnAuth({
             authenticatorData: hex"49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97630500000101",
             clientDataJSON: string.concat(
-                '{"type":"webauthn.get","challenge":"', Base64Url.encode(challenge), '","origin":"http://localhost:3005"}'
+                '{"type":"webauthn.get","challenge":"', Base64.encodeURL(challenge), '","origin":"http://localhost:3005"}'
                 ),
             challengeIndex: 23,
             typeIndex: 1,
@@ -31,7 +31,7 @@ contract WebAuthnTest is Test {
             authenticatorData: hex"49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d9763050000010a",
             clientDataJSON: string.concat(
                 '{"type":"webauthn.get","challenge":"',
-                Base64Url.encode(challenge),
+                Base64.encodeURL(challenge),
                 '","origin":"http://localhost:3005","crossOrigin":false}'
                 ),
             challengeIndex: 23,
