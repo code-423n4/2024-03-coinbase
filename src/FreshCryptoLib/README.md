@@ -1,0 +1,1 @@
+Function `ecdsa_verify` and all supporting code, excerpted from [FreshCryptoLib](https://github.com/rdubois-crypto/FreshCryptoLib/tree/master/solidity).
