@@ -97,8 +97,8 @@ The complete scope of this audit is the files included in `src/`
       - ERC4337Account.execute
       - ERC4337Account.executeBatch
     - Only EntryPoint
-     - ERC4337Account.executeWithoutChainIdValidation
-     - validateUserOp
+      - ERC4337Account.executeWithoutChainIdValidation
+      - validateUserOp
   - MagicSpend
     - Only owner
       - ownerWithdraw
