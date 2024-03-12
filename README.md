@@ -55,7 +55,14 @@ Automated findings output for the audit can be found [here](https://github.com/c
 
 _Note for C4 wardens: Anything included in this `Automated Findings / Publicly Known Issues` section is considered a publicly known issue and is ineligible for awards._
 
-[ ⭐️ SPONSORS: Are there any known issues or risks deemed acceptable that shouldn't lead to a valid finding? If so, list them here. ]
+- SmartWallet
+  - Crosschain replay via executeWithoutChainIdValidation relies on gas values from one chain being valid and accepted by a bundler on other chains. This may not be the case.
+- WebAuthnSol
+  - Read comments on `WebAuthn.sol` for details on validation steps we are knowingly skipping
+- FreshCryptoLib
+  - Exploits should only be considered in the context of a call path starting with `ecdsa_verify`. Other functions are not intended to be called directly.
+- MagicSpend
+  - When acting as a paymaster, EntryPoint will debit MagicSpend slightly more than actualGasCost, meaning what is withheld on a gas-paying withdraw will not cover 100% of MagicSpend's balance decrease in the EntryPoint.
 
 
 # Overview
@@ -63,7 +70,7 @@ _Note for C4 wardens: Anything included in this `Automated Findings / Publicly K
 This audit covers four separate but related groups of code
 - SmartWallet is a smart contract wallet. In addition to Ethereum address owners, it supports passkey owners and validates their signatures via WebAuthnSol. It supports multiple owners and allows for signing account-changing user operations such that they can be replayed across any EVM chain where the account has the same address. It is ERC-4337 compliant and can be used with paymasters such as MagicSpend. 
 - WebAuthnSol is a library for verifying WebAuthn Authentication Assertions onchain. 
-- FreshCryptoLib is an excerpt from [FreshCryptoLib](https://github.com/rdubois-crypto/FreshCryptoLib/tree/master/solidity), including the function `ecdsa_verify` and all code it depends on. This function is used by WebAuthnSol onchains without the RIP-7212 verifier.
+- FreshCryptoLib is an excerpt from [FreshCryptoLib](https://github.com/rdubois-crypto/FreshCryptoLib/tree/master/solidity), including the function `ecdsa_verify` and all code this function depends on. `ecdsa_verify` is used by WebAuthnSol onchains without the RIP-7212 verifier, and `FCL.n` is used to check for signature malleability. 
 - MagicSpend is a contract that allows for signature-based withdraws. MagicSpend is a EntryPoint v0.6 compliant paymaster and also allows using withdraws to pay transaction gas, in this way. 
 
 ## Links
@@ -85,49 +92,80 @@ TODO
 | [src/SmartWallet/MultiOwnable.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/SmartWallet/MultiOwnable.sol) | 80 | Auth contract, supporting multiple owners and owners identified as bytes to allow for secp256r1 public keys | |
 | [src/SmartWallet/ERC1271.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/SmartWallet/ERC1271.sol) | 54 | Abstract contract for ERC-1271 support for CoinbaseSmartWallet | |
 | [src/SmartWallet/CoinbaseSmartWalletFactory.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/SmartWallet/CoinbaseSmartWalletFactory.sol) | 35 | ERC-4337 compliant Factory for CoinbaseSmartWallet | [solady/utils/LibClone.sol](https://github.com/Vectorized/solady/blob/main/src/utils/LibClone.sol) |
-| [src/SmartWallet/CoinbaseSmartWallet.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/SmartWallet/CoinbaseSmartWallet.sol) | 35 | ERC-4337 compliant smart account | [solady/accounts/Receiver.sol](https://github.com/Vectorized/solady/blob/main/src/accounts/Receiver.sol) [solady/utils/UUPSUpgradeable.sol](https://github.com/Vectorized/solady/blob/main/src/utils/UUPSUpgradeable.sol) [solady/utils/SignatureCheckerLib.sol](https://github.com/Vectorized/solady/blob/main/src/utils/SignatureCheckerLib.sol) [account-abstraction/interfaces/UserOperation.sol](https://github.com/eth-infinitism/account-abstraction/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/interfaces/UserOperation.sol)|
-| [src/WebAuthnSol/WebAuthnSol.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/WebAuthnSol/WebAuthn.sol) | 54 | Solidity WebAuthn verifier| [solady/utils/LibClone.sol](https://github.com/Vectorized/solady/blob/main/src/utils/LibClone.sol) |
+| [src/SmartWallet/CoinbaseSmartWallet.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/SmartWallet/CoinbaseSmartWallet.sol) | 165 | ERC-4337 compliant smart account | [solady/accounts/Receiver.sol](https://github.com/Vectorized/solady/blob/main/src/accounts/Receiver.sol) [solady/utils/UUPSUpgradeable.sol](https://github.com/Vectorized/solady/blob/main/src/utils/UUPSUpgradeable.sol) [solady/utils/SignatureCheckerLib.sol](https://github.com/Vectorized/solady/blob/main/src/utils/SignatureCheckerLib.sol) [account-abstraction/interfaces/UserOperation.sol](https://github.com/eth-infinitism/account-abstraction/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/interfaces/UserOperation.sol)|
+| [src/WebAuthnSol/WebAuthnSol.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/WebAuthnSol/WebAuthn.sol) | 54 | Solidity WebAuthn verifier| [solady/utils/LibString.sol](https://github.com/Vectorized/solady/blob/main/src/utils/LibString.sol) [openzeppelin-contracts/contracts/utils/Base64](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Base64.sol) |
+| [src/FreshCryptoLib/FCL.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/FreshCryptoLib/FCL.sol) | 255 | Library for verifying secp256r1 signatures| |
+| [src/MagicSpend/MagicSpend.sol](https://github.com/code-423n4/2024-03-coinbase/blob/main/src/MagicSpend/MagicSpend.sol) | 143 | Contract supporting signature-based withdraws. Also ERC-4337 EntryPoint v0.6 compliant paymaster |  [solady/auth/Ownable.sol](https://github.com/Vectorized/solady/blob/main/src/auth/Ownable.sol) [solady/utils/SignatureCheckerLib.sol](https://github.com/Vectorized/solady/blob/main/src/utils/SignatureCheckerLib.sol) [solady/utils/SafeTransferLib.sol](https://github.com/Vectorized/solady/blob/main/src/utils/SafeTransferLib.sol) [account-abstraction/interfaces/UserOperation.sol](https://github.com/eth-infinitism/account-abstraction/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/interfaces/UserOperation.sol) [account-abstraction/interfaces/IPaymaster.sol](https://github.com/eth-infinitism/account-abstraction/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/interfaces/IPaymaster.sol) [account-abstraction/interfaces/IEntryPoint.sol](https://github.com/eth-infinitism/account-abstraction/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/interfaces/IEntryPoint.sol)|
 
 
 ## Out of scope
 
-*List any files/contracts that are out of scope for this audit.*
+The complete scope of this audit is the files included in `src/`
 
 # Additional Context
 
-- [ ] Describe any novel or unique curve logic or mathematical models implemented in the contracts
-- [ ] Please list specific ERC20 that your protocol is anticipated to interact with. Could be "any" (literally anything, fee on transfer tokens, ERC777 tokens and so forth) or a list of tokens you envision using on launch.
-- [ ] Please list specific ERC721 that your protocol is anticipated to interact with.
-- [ ] Which blockchains will this code be deployed to, and are considered in scope for this audit?
-- [ ] Please list all trusted roles (e.g. operators, slashers, pausers, etc.), the privileges they hold, and any conditions under which privilege escalation is expected/allowable
-- [ ] In the event of a DOS, could you outline a minimum duration after which you would consider a finding to be valid? This question is asked in the context of most systems' capacity to handle DoS attacks gracefully for a certain period.
-- [ ] Is any part of your implementation intended to conform to any EIP's? If yes, please list the contracts in this format: 
-  - `Contract1`: Should comply with `ERC/EIPX`
-  - `Contract2`: Should comply with `ERC/EIPY`
+- Which blockchains will this code be deployed to, and are considered in scope for this audit?
+  - This code can be deployed to any EVM-compatible chain. However, we are aware there are some EVM-chains where the factory and account address will not match other chains
+
+- Roles/Permissions
+  - SmartWallet
+    - Only owner or self
+      - MultiOwnable.addOwnerAddress
+      - MultiOwnable.addOwnerPublicKey
+      - MultiOwnable.AddOwnerAddressAtIndex
+      - MultiOwnable.addOwnerPublicKeyAtIndex
+      - MultiOwnable.removeOwnerAtIndex
+      - UUPSUpgradable.upgradeToAndCall
+    - Only EntryPoint, owner, or self
+      - ERC4337Account.execute
+      - ERC4337Account.executeBatch
+    - Only EntryPoint
+     - ERC4337Account.executeWithoutChainIdValidation
+     - validateUserOp
+  - MagicSpend
+    - Only owner
+      - ownerWithdraw
+      - entryPointDeposit
+      - entryPointWithdraw
+      - entryPointAddStake
+      - entryPointUnlockStake
+      - entryPointWithdrawStake
+
+- ERC/EIP Compliance
+  - `ERC1271`: Should comply with `ERC1271`
+  - `CoinbaseSmartWalletFactory`: Should comply with factory behavior defined in `ERC4337`
+  - `CoinbaseSmartWallet`: Should comply with account behavior defined in `ERC4337`
+  - `MagicSpend`: Should comply with paymaster behavior defined in `ERC4337`
 
 ## Attack ideas (Where to look for bugs)
 - SmartWallet
-  - Can an move funds from the account
-  - Can an attacker brick (make unusable) the account
+  - Can an move funds from the account?
+  - Can an attacker brick (make unusable) the account?
+  - Can functions not in `canSkipChainIdValidation` be used via `executeWithoutChainIdValidation`?
 - MagicSpend
-  - Can attacker withdraw using an invalid WithdrawRequest
-  - Can an attacker receive more than WithdrawRequest.amount 
+  - Can attacker withdraw using an invalid WithdrawRequest?
+  - Can an attacker be credited more than WithdrawRequest.amount?
+  - Are there any griefing attacks that could cause this paymaster to be banned?
+- WebAuthn
+  - False positive or false negative in validation
+    - Are there valid webauthn authentication assertions that do not pass our validation?
+- FreshCryptoLib
+  - False positive or false negative in validation
 
 
 ## Main invariants
 *Describe the project's main invariants (properties that should NEVER EVER be broken).*
 
 ## Scoping Details 
-[ ⭐️ SPONSORS: please confirm/edit the information below. ]
 
 ```
 - If you have a public code repo, please share it here: https://github.com/coinbase/smart-wallet, https://github.com/coinbase/magic-spend, https://github.com/base-org/webauthn-sol, https://github.com/base-org/fresh-crypto-lib-audit  
 - How many contracts are in scope?: 7   
-- Total SLoC for these contracts?: 785  
-- How many external imports are there?: 14  
+- Total SLoC for these contracts?: 786  
+- How many external imports are there?: 11  
 - How many separate interfaces and struct definitions are there for the contracts within scope?: 0  
 - Does most of your code generally use composition or inheritance?: Composition   
-- How many external calls?: 0   
+- How many external calls?: 5   
 - What is the overall line coverage percentage provided by your tests?: 95
 - Is this an upgrade of an existing system?: False
 - Check all that apply (e.g. timelock, NFT, AMM, ERC20, rollups, etc.): 
