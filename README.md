@@ -62,7 +62,6 @@ This audit covers four separate but related groups of code
 # Scope
 
 
-*List all files in scope in the table below (along with hyperlinks) -- and feel free to add notes here to emphasize areas of focus.*
 
 | Contract | SLOC | Purpose | External Imports |  
 | ----------- | ----------- | ----------- | ----------- |
