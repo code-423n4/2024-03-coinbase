@@ -85,8 +85,7 @@ The complete scope of this audit is the files included in `src/`
 # Additional Context
 
 - Which blockchains will this code be deployed to, and are considered in scope for this audit?
-  - This code can be deployed to any EVM-compatible chain. However, we are aware there are some EVM-chains where the factory and account address will not match other chains
-
+  - We have near-term plans to deploy this code to the mainnets of the following chains: Ethereum, Base, Optimism, Arbitrum, Polygon, BNB, Avalanche, Gnosis.
 - Roles/Permissions
   - SmartWallet
     - Only owner or self
