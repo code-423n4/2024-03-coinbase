@@ -53,9 +53,13 @@ This audit covers four separate but related groups of code
     - [Cantina](https://github.com/base-org/webauthn-sol/blob/main/audits/report-review-coinbase-webauthn.pdf)
   - FreshCryptoLib
     - Coinbase completed an audit of FreshCryptoLib with artifacts [here](https://github.com/base-org/FCL-ecdsa-verify-audit/tree/main).
+      - [Audit doc](https://github.com/base-org/FCL-ecdsa-verify-audit/blob/main/docs/secp256r1-ecdsa-verify-solidity-review.pdf)
+      - [Testing methodology](https://github.com/base-org/FCL-ecdsa-verify-audit/blob/main/docs/secp256r1-ecdsa-verify-solidity-review-testing-plan.pdf) 
   - MagicSpend
     - [Cantina](https://github.com/coinbase/magic-spend/blob/main/audit/report-review-coinbase-magicspend.pdf)
-- **Documentation:** Each folder has a detailed README. Please read those. 
+- **Documentation:** Each folder has a detailed README. Please read those.
+- **Demo!:** You can try using all of these contracts together on our [demo site](https://keys.coinbase.com/developers).
+- **Explainer Video:** [Here's a video](https://x.com/WilsonCusack/status/1764355750149710190?s=20) talking through the demo and what is going on behind the scenes. 
 
 
 
@@ -130,7 +134,31 @@ The complete scope of this audit is the files included in `src/`
 
 
 ## Main invariants
-*Describe the project's main invariants (properties that should NEVER EVER be broken).*
+- SmartWallet
+  - Only current owners or EntryPoint can make calls that
+    - Decrease account balance
+    - Add or remove owner
+    - Upgrade account
+  - Any current owner can add or remove any other owner
+- MagicSpend
+  - Only owner can
+    - Move funds from contract without a valid `WithdrawRequest`
+    - Stake and unstake in EntryPoint
+    - Add and withdraw from EntryPoint balance
+  - Every `WithdrawRequest` can only be used once
+  - A `WithdrawRequest` cannot be used past `WithdrawRequest.expiry`
+  - Withdrawers can never receive more than `WithdrawRequest.amount`
+  - Withdrawers using paymaster functionality should receive exactly `WithdrawRequest.amount - postOp_actualGasCost`
+- WebAuthn
+  - Validation passes if and only if
+    - '"challenge":""`challenge`"` is occurs in `clientDataJSON` starting at `challengeIndex`
+    - '"type":"webauth.get"` is occurs in `clientDataJSON` starting at `typeIndex`
+    - User presence bit is set
+    - User verified bit is set, if required
+    - `r` and `s` are valid signature values for `x`, `y` on the message hash that results from `clientDataJSON` and `authenticatorData`
+- FreshCryptoLib
+  - All calls with valid sets of message, r, s, Qx, and Qy for the secp256r1 curve should return true
+  - All calls with invalid sets of message, r, s, Qx, and Qy for the secp256r1 curve should revert or return false
 
 ## Scoping Details 
 
