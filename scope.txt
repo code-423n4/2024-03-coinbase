@@ -1,0 +1,7 @@
+src/SmartWallet/MultiOwnable.sol
+src/SmartWallet/ERC1271.sol
+src/SmartWallet/CoinbaseSmartWalletFactory.sol
+src/SmartWallet/CoinbaseSmartWallet.sol
+src/WebAuthnSol/WebAuthn.sol
+src/FreshCryptoLib/FCL.sol
+src/MagicSpend/MagicSpend.sol
