@@ -96,10 +96,10 @@ The complete scope of this audit is the files included in `src/`
       - MultiOwnable.removeOwnerAtIndex
       - UUPSUpgradable.upgradeToAndCall
     - Only EntryPoint, owner, or self
-      - ERC4337Account.execute
-      - ERC4337Account.executeBatch
+      - CoinbaseSmartWallet.execute
+      - CoinbaseSmartWallet.executeBatch
     - Only EntryPoint
-      - ERC4337Account.executeWithoutChainIdValidation
+      - CoinbaseSmartWallet.executeWithoutChainIdValidation
       - validateUserOp
   - MagicSpend
     - Only owner
