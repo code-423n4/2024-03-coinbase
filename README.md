@@ -48,9 +48,10 @@ This audit covers four separate but related groups of code
 
 - **Previous audits:** 
   - SmartWallet
-    - TODO
+    - [Cantina](https://github.com/coinbase/smart-wallet/blob/main/audits/report-Base%20Paymaster%20%26%20Smart%20Account.pdf)
   - WebAuthnSol
     - [Cantina](https://github.com/base-org/webauthn-sol/blob/main/audits/report-review-coinbase-webauthn.pdf)
+    - Certora (link pending)
   - FreshCryptoLib
     - Coinbase completed an audit of FreshCryptoLib with artifacts [here](https://github.com/base-org/FCL-ecdsa-verify-audit/tree/main).
       - [Audit doc](https://github.com/base-org/FCL-ecdsa-verify-audit/blob/main/docs/secp256r1-ecdsa-verify-solidity-review.pdf)
