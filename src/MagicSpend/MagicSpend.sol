@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-import {Ownable} from "solady/auth/Ownable.sol";
-import {SignatureCheckerLib} from "solady/utils/SignatureCheckerLib.sol";
-import {SafeTransferLib} from "solady/utils/SafeTransferLib.sol";
+import {Ownable} from "solady/src/auth/Ownable.sol";
+import {SignatureCheckerLib} from "solady/src/utils/SignatureCheckerLib.sol";
+import {SafeTransferLib} from "solady/src/utils/SafeTransferLib.sol";
 import {UserOperation} from "account-abstraction/interfaces/UserOperation.sol";
 import {IPaymaster} from "account-abstraction/interfaces/IPaymaster.sol";
 import {IEntryPoint} from "account-abstraction/interfaces/IEntryPoint.sol";
@@ -39,9 +39,9 @@ contract MagicSpend is Ownable, IPaymaster {
     /// @notice Emitted after validating a withdraw request and funds are about to be withdrawn.
     ///
     /// @param account The account address.
-    /// @param asset The asset withdrawn.
-    /// @param amount The amount withdrawn.
-    /// @param nonce The request nonce.
+    /// @param asset   The asset withdrawn.
+    /// @param amount  The amount withdrawn.
+    /// @param nonce   The request nonce.
     event MagicSpendWithdrawal(address indexed account, address indexed asset, uint256 amount, uint256 nonce);
 
     /// @notice Thrown when the withdraw request signature is invalid.
@@ -64,13 +64,20 @@ contract MagicSpend is Ownable, IPaymaster {
     ///         to sponsor the transaction gas.
     ///
     /// @param requested The withdraw request amount.
-    /// @param maxCost The max gas cost required by the Entrypoint.
+    /// @param maxCost   The max gas cost required by the Entrypoint.
     error RequestLessThanGasMaxCost(uint256 requested, uint256 maxCost);
 
     /// @notice Thrown when the withdraw request asset is not ETH (zero address).
     ///
     /// @param asset The requested asset.
     error UnsupportedPaymasterAsset(address asset);
+
+    /// @notice Thrown during `UserOperation` validation when the current balance is insufficient to cover the
+    ///         requested amount (exluding the `maxGasCost` set by the Entrypoint).
+    ///
+    /// @param requestedAmount The requested amount excluding gas.
+    /// @param balance         The current contract balance.
+    error InsufficientBalance(uint256 requestedAmount, uint256 balance);
 
     /// @notice Thrown when trying to withdraw funds but nothing is available.
     error NoExcess();
@@ -105,9 +112,10 @@ contract MagicSpend is Ownable, IPaymaster {
         returns (bytes memory context, uint256 validationData)
     {
         WithdrawRequest memory withdrawRequest = abi.decode(userOp.paymasterAndData[20:], (WithdrawRequest));
+        uint256 withdrawAmount = withdrawRequest.amount;
 
-        if (withdrawRequest.amount < maxCost) {
-            revert RequestLessThanGasMaxCost(withdrawRequest.amount, maxCost);
+        if (withdrawAmount < maxCost) {
+            revert RequestLessThanGasMaxCost(withdrawAmount, maxCost);
         }
 
         if (withdrawRequest.asset != address(0)) {
@@ -119,9 +127,15 @@ contract MagicSpend is Ownable, IPaymaster {
         bool sigFailed = !isValidWithdrawSignature(userOp.sender, withdrawRequest);
         validationData = (sigFailed ? 1 : 0) | (uint256(withdrawRequest.expiry) << 160);
 
-        uint256 excess = withdrawRequest.amount - maxCost;
-        withdrawableFunds[userOp.sender] += excess;
+        // Ensure at validation that the contract has enough balance to cover the requested funds.
+        // NOTE: This check is necessary to enforce that the contract will be able to transfer the remaining funds
+        //       when `postOp()` is called back after the `UserOperation` has been executed.
+        if (address(this).balance < withdrawAmount) {
+            revert InsufficientBalance(withdrawAmount, address(this).balance);
+        }
 
+        // NOTE: Do not include the gas part in withdrawable funds as it will be handled in `postOp()`.
+        withdrawableFunds[userOp.sender] += withdrawAmount - maxCost;
         context = abi.encode(maxCost, userOp.sender);
     }
 
@@ -130,18 +144,19 @@ contract MagicSpend is Ownable, IPaymaster {
         external
         onlyEntryPoint
     {
-        // If `postOp` is called back after a first fail then revert entire `UserOperation`.
-        if (mode == IPaymaster.PostOpMode.postOpReverted) {
-            revert UnexpectedPostOpRevertedMode();
-        }
+        // `PostOpMode.postOpReverted` should be impossible.
+        // Only possible cause would be if this contract does not own enough ETH to transfer
+        // but this is checked at the validation step.
+        assert(mode != PostOpMode.postOpReverted);
 
-        (uint256 maxCost, address account) = abi.decode(context, (uint256, address));
+        (uint256 maxGasCost, address account) = abi.decode(context, (uint256, address));
 
-        // credit user difference between actual and maxCost
-        // and unwithdrawn excess
-        uint256 withdrawable = withdrawableFunds[account] + (maxCost - actualGasCost);
+        // Compute the total remaining funds available for the user accout.
+        // NOTE: Take into account the user operation gas that was not consummed.
+        uint256 withdrawable = withdrawableFunds[account] + (maxGasCost - actualGasCost);
+
+        // Send the all remaining funds to the user accout.
         delete withdrawableFunds[account];
-
         if (withdrawable > 0) {
             SafeTransferLib.forceSafeTransferETH(account, withdrawable, SafeTransferLib.GAS_STIPEND_NO_STORAGE_WRITES);
         }
@@ -202,7 +217,7 @@ contract MagicSpend is Ownable, IPaymaster {
     ///
     /// @dev Reverts if not called by the owner of the contract.
     ///
-    /// @param to The beneficiary address.
+    /// @param to     The beneficiary address.
     /// @param amount The amount to withdraw from the Entrypoint.
     function entryPointWithdraw(address payable to, uint256 amount) external onlyOwner {
         IEntryPoint(entryPoint()).withdrawTo(to, amount);
@@ -212,8 +227,8 @@ contract MagicSpend is Ownable, IPaymaster {
     ///
     /// @dev Reverts if not called by the owner of the contract.
     ///
-    /// @param amount The amount to stake in the Entrypoint.
-    /// @param unstakeDelaySeconds XXX
+    /// @param amount              The amount to stake in the Entrypoint.
+    /// @param unstakeDelaySeconds The new lock duration before the deposit can be withdrawn.
     function entryPointAddStake(uint256 amount, uint32 unstakeDelaySeconds) external payable onlyOwner {
         IEntryPoint(entryPoint()).addStake{value: amount}(unstakeDelaySeconds);
     }
@@ -238,7 +253,7 @@ contract MagicSpend is Ownable, IPaymaster {
     ///
     /// @dev Does not validate nonce or expiry.
     ///
-    /// @param account The account address.
+    /// @param account         The account address.
     /// @param withdrawRequest The withdraw request.
     ///
     /// @return `true` if the signature is valid, else `false`.
@@ -257,7 +272,7 @@ contract MagicSpend is Ownable, IPaymaster {
     /// @dev Returns an EIP-191 compliant Ethereum Signed Message (version 0x45), see
     ///      https://eips.ethereum.org/EIPS/eip-191.
     ///
-    /// @param account The account address.
+    /// @param account         The account address.
     /// @param withdrawRequest The withdraw request.
     ///
     /// @return The hash to be signed for the given `account` and `withdrawRequest`.
@@ -278,7 +293,7 @@ contract MagicSpend is Ownable, IPaymaster {
     /// @notice Returns whether the `nonce` has been used by the given `account`.
     ///
     /// @param account The account address.
-    /// @param nonce The nonce to check.
+    /// @param nonce   The nonce to check.
     ///
     /// @return `true` if the nonce has already been used by the account, else `false`.
     function nonceUsed(address account, uint256 nonce) external view returns (bool) {
@@ -295,7 +310,7 @@ contract MagicSpend is Ownable, IPaymaster {
     /// @dev Runs all non-signature validation checks.
     /// @dev Reverts if the withdraw request nonce has already been used.
     ///
-    /// @param account The account address.
+    /// @param account         The account address.
     /// @param withdrawRequest The withdraw request to validate.
     function _validateRequest(address account, WithdrawRequest memory withdrawRequest) internal {
         if (_nonceUsed[withdrawRequest.nonce][account]) {
@@ -313,8 +328,8 @@ contract MagicSpend is Ownable, IPaymaster {
     /// @dev Callers MUST validate that the withdraw is legitimate before calling this method as
     ///      no validation is performed here.
     ///
-    /// @param asset The asset to withdraw.
-    /// @param to The beneficiary address.
+    /// @param asset  The asset to withdraw.
+    /// @param to     The beneficiary address.
     /// @param amount The amount to withdraw.
     function _withdraw(address asset, address to, uint256 amount) internal {
         if (asset == address(0)) {
