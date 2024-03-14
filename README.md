@@ -32,6 +32,16 @@ _Note for C4 wardens: Anything included in this `Automated Findings / Publicly K
   - Read comments on `WebAuthn.sol` for details on validation steps we are knowingly skipping
 - FreshCryptoLib
   - Exploits should only be considered in the context of a call path starting with `ecdsa_verify`. Other functions are not intended to be called directly.
+  - Issues discovered in a previous audit 
+    1. ecAff_isOnCurve line 79 has a conditional error, fixed here https://github.com/rdubois-crypto/FreshCryptoLib/pull/60
+```if (((0 == x) && (0 == y)) || x == p || y == p)```
+ should be:
+```if (((0 == x) && (0 == y)) || (x == p && y == p)) {```
+  
+    2. A case in ecZZ_mulmuladd_S_asm where an infinite loop could happen if the points (-Gx, -Gy, 1, 1) are passed as arguments, fixed here https://github.com/rdubois-crypto/FreshCryptoLib/pull/61
+There should be a line line after line 138 with
+```if (scalar_u == 0 && scalar_v == 0) return 0;```
+to safely exit early
 - MagicSpend
   - When acting as a paymaster, EntryPoint will debit MagicSpend slightly more than actualGasCost, meaning what is withheld on a gas-paying withdraw will not cover 100% of MagicSpend's balance decrease in the EntryPoint.
   - `validatePaymasterUserOp` checks address.balance, which currently violates ERC-7562 rules, however there is [PR](https://github.com/eth-infinitism/account-abstraction/pull/460) to change this. 
