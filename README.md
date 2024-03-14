@@ -1,6 +1,6 @@
 
 
-# Coinbase audit details
+# Smart Wallet audit details
 - Total Prize Pool: $49,000 in USDC
   - HM awards: $24,750 in USDC 
   - QA awards: $750 in USDC
