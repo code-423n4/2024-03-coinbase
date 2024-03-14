@@ -34,6 +34,7 @@ _Note for C4 wardens: Anything included in this `Automated Findings / Publicly K
   - Exploits should only be considered in the context of a call path starting with `ecdsa_verify`. Other functions are not intended to be called directly.
 - MagicSpend
   - When acting as a paymaster, EntryPoint will debit MagicSpend slightly more than actualGasCost, meaning what is withheld on a gas-paying withdraw will not cover 100% of MagicSpend's balance decrease in the EntryPoint.
+  - `validatePaymasterUserOp` checks address.balance, which currently violates ERC-7562 rules, however there is [PR](https://github.com/eth-infinitism/account-abstraction/pull/460) to change this. 
 
 
 # Overview
@@ -149,6 +150,7 @@ The complete scope of this audit is the files included in `src/`
   - A `WithdrawRequest` cannot be used past `WithdrawRequest.expiry`.
   - Withdrawers can never receive more than `WithdrawRequest.amount`.
   - Withdrawers using paymaster functionality should receive exactly `WithdrawRequest.amount - postOp_actualGasCost`.
+  - At the end of a transaction, `_withdrawableETH` contains no non-zero balances.
 - WebAuthn
   - Validation passes if and only if
     - `'"challenge":""<challenge>"` occurs in `clientDataJSON` starting at `challengeIndex`.
