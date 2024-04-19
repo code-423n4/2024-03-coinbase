@@ -1,0 +1,595 @@
+==============================================================
+Guild: Code4rena
+Channel: ARCHIVE-Q1-2024 / coinbase-mar14
+==============================================================
+
+[03/14/2024 12:56] itsmetechjay (pinned)
+👋 Hello and welcome to the audit channel for the $49,000 **Smart Wallet** audit!
+
+📆 Audit opens 03/14/2024 20:00 (20:00 UTC) and runs through 03/21/2024 20:00 (20:00 UTC) (7 days).
+
+ℹ️ **New approach to warden questions:** For this audit, we’re piloting a new Q&A process. Please help us test it out!
+
+1. **Create a private (or public) thread asking your question** and tag in @RaymondFam, who will be helping wardens with questions throughout the audit. @RaymondFam will review warden questions daily, and reply to either: a) validate the documentation bot's answer, b) provide additional clarification, or c) escalate your question to the sponsor team.
+2. 🤖 **Documentation bot assistance:** While waiting for a response from the Lookout, you will have an option to get an answer from our documentation bot. The bot will make its best attempt to answer based on the codebase and documentation, and link you to relevant resources.  You can also tag `@Documentation Wolf` in any thread (private or public) to get answers directly from the bot.
+3. :code4rena: **C4 staff will monitor all question threads,** so if you have any questions or concerns about this process, you can ask those in-thread too. 
+
+We'll be posting relevant links, documentation, etc. here, so if you intend to participate in this audit, consider enabling notifications for this channel. 🐺 ⏰
+
+Audit Page: https://code4rena.com/audits/2024-03-smart-wallet
+
+{Embed}
+https://code4rena.com/audits/2024-03-smart-wallet
+Smart Wallet | Code4rena
+$49,000 in USDC
+14 March 8:00 PM—21 March 8:00 PM
+Code4rena - ARCHIVE-Q1-2024 - coinbase-mar14 [1215103614079467611].txt_Files/c4-og-v2-81DB9.png
+
+
+[03/14/2024 12:56] itsmetechjay
+Pinned a message.
+
+
+[03/14/2024 20:02] C4 (pinned)
+**Automated Findings / Publicly Known Issues**
+
+Reminder: all [Automated Findings / Publicly Known Issues](https://github.com/code-423n4/2024-03-coinbase#automated-findings--publicly-known-issues) are out of scope and ineligible for awards.
+
+{Embed}
+https://github.com/code-423n4/2024-03-coinbase
+GitHub - code-423n4/2024-03-coinbase
+Contribute to code-423n4/2024-03-coinbase development by creating an account on GitHub.
+Code4rena - ARCHIVE-Q1-2024 - coinbase-mar14 [1215103614079467611].txt_Files/f7b5f737-c0ed-49a3-b667-afd0877949bf-7476B
+
+
+[03/14/2024 20:06] thebrittfactor
+Pinned a message.
+
+
+[03/14/2024 21:01] kartoonjoy (pinned)
+@🐺wardens - a known issue was shared by the sponsor <5 minutes after the start time and has now been added to the README. This issue will be considered out of scope for the audit except for the bot race, since that has already run.
+
+{Reactions}
+👍 (10) 🙏 (4) 💯 (2) 
+
+[03/14/2024 21:08] wilsoncusack
+Hi all! Excited to work with you 🙂
+
+{Reactions}
+👋 (7) 🙌 (3) 
+
+[03/14/2024 21:10] moeid3
+yeah me too
+
+
+[03/14/2024 21:10] liveactionllamac4
+Pinned a message.
+
+
+[03/14/2024 22:12] aodkgkrogrogoovg2o3btivr
+Testing privileged functions for unintended args can be in scope if its something important ?
+
+
+[03/14/2024 23:21] wilsoncusack
+Privileged functions should be fully in scope
+
+
+[03/15/2024 13:32] Message Wolf#0225 (pinned)
+**Automated Findings / Publicly Known Issues**
+
+Automated findings output for the audit can be found [here](https://github.com/code-423n4/2024-03-coinbase/blob/main/bot-report.md).
+
+*Note for C4 wardens: Anything included in the automated findings output is considered a publicly known issue and is ineligible for awards.*
+
+
+[03/15/2024 13:42] 0xsorrynotsorry
+Pinned a message.
+
+{Reactions}
+thankyou 
+
+[03/15/2024 13:43] 0xtotem
+Started a thread.
+
+
+[03/16/2024 13:59] shealtielanz
+@wilsoncusack please check private thread
+
+{Reactions}
+✅ (3) 
+
+[03/16/2024 23:50] tamayonft
+Started a thread.
+
+
+[03/17/2024 17:50] ivanfitro
+i have this error any idea?
+```
+Compiler run failed:
+Error (7576): Undeclared identifier.
+  --> test/MagicSpend/PostOp.t.sol:14:16:
+   |
+14 |         mode = bound(mode, 0, 1);
+   |                ^^^^^
+```
+
+
+[03/17/2024 17:51] ivanfitro
+and with console2 the same
+
+
+[03/17/2024 17:51] _3doc_
+is your foundry up-to-date with the latest version?
+
+
+[03/17/2024 17:51] ivanfitro
+yes
+
+
+[03/17/2024 17:52] ivanfitro
+but i see now that in the folder forge-std is empty
+
+
+[03/17/2024 17:53] _3doc_
+try with "forge install" then maybe
+
+
+[03/17/2024 17:53] ivanfitro
+ok i try
+
+
+[03/17/2024 17:54] ivanfitro
+now is working! I dont know why in forge-std is empty but now is full
+
+
+[03/17/2024 17:54] ivanfitro
+thanks!
+
+
+[03/17/2024 18:14] ivanfitro
+why in the constructor of CoinbaseSmartWallet is initialized the owners with the address(0)?
+
+
+[03/17/2024 18:34] sp1cymeatball
+To prevent implementation contract initialization
+
+
+[03/17/2024 18:39] ivanfitro
+ok thank you!
+
+
+[03/18/2024 04:34] 0xabhay.
+for every specific domain the webAuthn.sol generates a different private-public key pair?
+
+
+[03/19/2024 02:40] tamayonft
+How users can get  transactions sponsored by the magicSpend?
+
+
+[03/19/2024 05:15] _3doc_
+It’s explained in this demo -> https://x.com/WilsonCusack/status/1764355750149710190?s=20
+
+{Embed}
+https://twitter.com/WilsonCusack/status/1764355750149710190?s=20
+wilson (@WilsonCusack) on X
+Video going through some of the details behind the Smart Wallet demo. Let me know if you have questions and/or other videos you'd like to see!
+Code4rena - ARCHIVE-Q1-2024 - coinbase-mar14 [1215103614079467611].txt_Files/pF9K4r1UBoEgQBSt-9CF8E.jpg%3Alarge
+Twitter
+
+
+[03/19/2024 11:28] 0xabhay.
+Magicspend.sol is only funded by the User?
+
+
+[03/19/2024 22:09] tamayonft
+Same question, I think not, because the purpose of the paymasters is to pay for transactions on behalf of the user
+
+
+[03/20/2024 00:07] shealtielanz
+using the entry point, the user ops specifies the paymaster as the magic spender
+
+
+[03/20/2024 00:10] shealtielanz
+no mainly funded by the owner via `entryPointDeposit()` where the entry point uses the deposited funds as gas to run the user transactions
+
+
+[03/20/2024 00:13] shealtielanz
+user has funds in the magicspender in a scenario where the withdrawAmount is greater than the maxCost
+
+{Reactions}
+✅ (2) 
+
+[03/20/2024 11:48] 0xabhay.
+every user deploys there own MagicSpend.sol?
+
+
+[03/20/2024 15:21] sovaslava9
+If user choose, that gas will be payed by his coinbase wallet, how will the funds appear on the magicspend contract? Coinbase website just hold funds on user balance and give signature..
+
+
+[03/20/2024 17:52] 0xf40
+No, the MagicSpend is an ERC-4337 Paymaster contact. It should be managed by Coinbase and provide services such as fee payment for users.
+
+
+[03/20/2024 17:53] 0xabhay.
+So it's like a sponsor paymaster
+
+
+[03/20/2024 17:55] 0xf40
+If gas will be payed by his wallet, there won't be a need for MagicSpend and User Operation probaly won't even contain paymaster(MagicSpend) data
+
+
+[03/20/2024 17:55] 0xf40
+I think so
+
+
+[03/20/2024 17:56] 0xf40
+```There are three different ways the Magic Spend smart contract can be used
+1. Pay gas only
+2. Transfer funds during execution only
+3. Pay gas and transfer funds during execution
+```
+
+
+[03/20/2024 17:56] 0xabhay.
+Yes boy thanks 🙏 i understand 👍
+
+
+[03/20/2024 18:00] 0xf40
+This may be helpful to get some ideas
+https://x.com/AckeeBlockchain/status/1728853559662506012?s=20
+
+{Embed}
+https://twitter.com/AckeeBlockchain/status/1728853559662506012?s=20
+Ackee Blockchain Security (@AckeeBlockchain) on X
+Understanding ERC-4337 may be tricky but we are here to help 🤓
+
+In this post we focused on security pitfalls from a perspective of a smart wallet, here are some tips for you 🧵👇🏼
+Code4rena - ARCHIVE-Q1-2024 - coinbase-mar14 [1215103614079467611].txt_Files/F_4fJi-boAEfXuy-B088E.jpg%3Alarge
+Twitter
+
+
+[03/20/2024 18:01] 0xabhay.
+Thank for sharing 😊
+
+{Reactions}
+🫡 
+
+[03/21/2024 03:02] 0xabhay.
+Users can transfer funds to Magic spend.sol?
+
+
+[03/21/2024 06:55] shealtielanz
+Not really 
+It is managed and funded by coinbase. Only one MagicSpend on each chain
+
+
+[03/21/2024 06:55] 0xabhay.
+@shealtielanz a user coin base account?
+
+
+[03/21/2024 06:56] shealtielanz
+Yes, 
+But not directly.
+Take a request from coinbase app and your coinbase acct Is deducted, use that request to withdraw from MagicSpend.sol
+
+
+[03/21/2024 06:57] shealtielanz
+This can happen during the execution of the users operation in SCW `call()`
+
+
+[03/21/2024 06:58] shealtielanz
+Initially the withdrawal request is part of the payment master data in the user ops struct
+
+
+[03/21/2024 06:59] 0xabhay.
+so magic spend will spend my balance for the operations + gas ?
+
+
+[03/21/2024 07:00] shealtielanz
+The read me does a nice job to tackle the flow of user Tx
+
+
+[03/21/2024 07:00] shealtielanz
+Yes something very similar and any excess funds left is refunded to the users SCW acct
+
+
+[03/21/2024 07:02] 0xabhay.
+lol, I thought the protocol would pay the gas for the transaction. thanks for clarification
+
+{Reactions}
+✅ 
+
+[03/21/2024 07:02] shealtielanz
+Haa 😂 you pay first with your coinbase account
+
+
+[03/21/2024 07:03] shealtielanz
+It’s like made easy for the users
+
+
+[03/21/2024 07:03] 0xabhay.
+so it is a so-called AA
+
+
+[03/21/2024 07:04] shealtielanz
+the whole concept is AA, everyone in the system, like bundlers, entry point and the SCW with MagicSpend help Implement the Idea of the AA
+
+{Reactions}
+👍🏼 
+
+[03/21/2024 10:34] 0xabhay.
+@shealtielanz SCW will hold the user assets, like ERC20 and ERC721?
+
+
+[03/21/2024 10:36] shealtielanz
+Yes i think that’s handled in receiver.sol
+
+{Reactions}
+👍 
+
+[03/21/2024 19:57] wilsoncusack
+hey guys sorry I missed some questions here, thanks for helping each other 🙂
+
+{Reactions}
+❤️ 
+
+[03/21/2024 20:02] C4
+**🚨 AUDIT ALERT**
+
+@🐺wardens  The **Smart Wallet** audit is now closed! Huge thanks to everyone who participated , whether you submitted a finding or not.
+
+What's next: The sponsor team and judge will review the findings over the next couple of weeks. Keep an eye on #📢announcements for regular updates on how the audit is progressing through awarding , judging  and reporting . Feel free to ping a Contest-Admin if you have questions along the way!
+
+
+[03/21/2024 20:22] 0xabhay.
+How many submissions?
+
+
+[03/21/2024 20:32] 0x11singh99
+197
+
+
+[03/21/2024 22:03] ladboy233
+nice！！！
+
+{Reactions}
+❤️ (4) 
+
+[03/21/2024 22:38] ladboy233
+Yeah code4rena really help us make impact
+
+{Reactions}
+🌸 (3) 
+
+[03/21/2024 22:38] ladboy233
+we can say we audit coinbase code.
+
+{Reactions}
+😂 (6) 
+
+[03/21/2024 22:38] ladboy233
+haha
+
+
+[03/22/2024 01:23] tamayonft
+Nice codebase, I have fun digging in to erc4337
+
+{Reactions}
+👍 
+
+[03/22/2024 01:24] tamayonft
+Yes bro, coinbase it's actually my favorite exchange and it's what I use normally
+
+
+[03/22/2024 01:24] tamayonft
+Thanks to the sponsors for answer all the questions
+
+
+[03/22/2024 07:32] atarpara
+I saw a lot of wardens report invalid findings because they didn't understand how ERC4337 works and its process flow. Let's see how valid after judging process.
+
+{Reactions}
+👍 (2) 
+
+[03/22/2024 10:25] visualbits
+This topic always surprises me, and what's even more surprising is that people who discover very unique bugs often miss simple ones.
+
+
+[04/01/2024 16:03] thebrittfactor
+🤑 🎉  Awards for **Coinbase Smart Wallet**:
+
+$8,800.82 USDC » Circolors (@irreverent and @McToady)
+$6,761.88 USDC » @lsaudit
+$2,659.30 USDC » doublespending
+$2,629.91 USDC » @Jorgect
+$2,054.00 USDC » @imare
+$2,045.89 USDC » @cheatc0d3
+$344.14 USDC » roguereggiant
+$264.73 USDC » @0xepley
+$264.73 USDC » @emerald7017
+$264.73 USDC » @popeye
+$157.09 USDC » @K42 Ψ
+$142.11 USDC » @Albahaca
+$120.84 USDC » @0x11singh99
+$120.84 USDC » @0xAnah
+$120.84 USDC » @naman1778
+$57.62 USDC » @0xbrett8571
+$57.62 USDC » @foxb868
+$47.24 USDC » 0xmystery
+$36.34 USDC » @0xhacksmithh
+$36.34 USDC » @7ashraf
+$36.34 USDC » @Bigsam
+$36.34 USDC » @iceBear
+$36.34 USDC » @Koala
+$36.34 USDC » @Limbooo
+$36.34 USDC » @Tigerfrake
+$36.34 USDC » @ZanyBonzy
+$36.34 USDC » @d3e4
+$36.34 USDC » @Gerard Persoon
+$36.34 USDC » @shealtielanz
+$36.34 USDC » @y4y
+$34.97 USDC » @SAQ
+$34.97 USDC » clara
+$34.97 USDC » @hunter_w3b
+$28.22 USDC » SBSecurity (@Blckhv and @Slavcheww)
+$21.28 USDC » @JCK
+$21.28 USDC » @jcfichtner
+$21.28 USDC » @Lin
+$21.28 USDC » @msk0333
+$21.28 USDC » @myd8418
+$21.28 USDC » @Fouzantanveer
+$21.28 USDC » @kaveyjoe
+$21.28 USDC » @unique
+
+{Reactions}
+🌸 
+
+[04/01/2024 16:04] thebrittfactor
+$13.69 USDC » @Hajime
+$13.69 USDC » @SM3_SS
+$13.69 USDC » @dharma09
+$13.69 USDC » shamsulhaq123
+$13.69 USDC » @slvDev
+$6.95 USDC » @aycozynfada
+$6.95 USDC » @cryptphi
+$6.95 USDC » @jesjupyter
+$6.95 USDC » @robriks
+
+🏁 Findings summary
+--------------------------------------
+High risk findings: 1 unique (2 total)
+Med risk findings: 2 unique (4 total)
+Gas reports: 13 (Best: K42)
+QA reports: 26 (Best: 0xmystery)
+Advanced analysis reports: 21 (Best: roguereggiant)
+
+Awards will be distributed on Polygon within the next week. Congratulations all!  💸 💸 💸
+
+*Note: If you participated in this audit and don’t see your name on this list, please wait until the report is published and the findings repo is made public to check on your submissions.*
+
+{Reactions}
+🎉 (6) ✅ (2) 
+
+[04/01/2024 16:05] tamayonft
+Wow top 5 finally
+
+{Reactions}
+🔥 (3) 
+
+[04/01/2024 16:05] tamayonft
+Thanks to the sponsors for everything
+
+
+[04/01/2024 16:06] tamayonft
+Best lock for all competitior
+
+
+[04/01/2024 16:06] tamayonft
+Competitors
+
+
+[04/01/2024 16:06] 7a4raf
+That was quick!! 
+Congrats everyone 🔥🔥👌
+
+
+[04/01/2024 16:29] 0xjuancito
+Congrats chad! 🏆
+
+
+[04/01/2024 16:33] haxatron1
+Congrats @McToady
+
+{Reactions}
+dance_vibe (2) 
+
+[04/01/2024 16:35] mctoady
+Cheers! Wild :blobsweat:
+
+{Reactions}
+😂 (5) pepesalute 
+
+[04/01/2024 18:20] 0xpopeye
+Congrats ser🎉 @McToady
+
+{Reactions}
+yay 
+
+[04/01/2024 23:55] mctoady
+thank you!
+
+
+[04/02/2024 07:50] nilay27
+congrats to the winners!!
+
+{Reactions}
+👌 
+
+[04/02/2024 23:54] .anas_22
+Hello I subimited a few findings, I can't see my name in the participants list for results?
+
+
+[04/03/2024 01:48] kaveyjoe
+Its not participants list , its a result list of those whose findings were validated and reward according to their findings.
+
+
+[04/03/2024 01:59] .anas_22
+I am not talking about the one that is shared in the chat I am talking about the one on the C4 platform it has names of those who participated and had no validated findings.
+
+
+[04/03/2024 08:44] .anas_22
+https://code4rena.com/audits/2024-03-smart-wallet#top
+
+{Embed}
+https://code4rena.com/audits/2024-03-smart-wallet
+Smart Wallet | Code4rena
+$49,000 in USDC
+14 March 8:00 PM—21 March 8:00 PM
+Code4rena - ARCHIVE-Q1-2024 - coinbase-mar14 [1215103614079467611].txt_Files/c4-og-v2-96E32.png
+
+
+[04/03/2024 08:55] kaveyjoe
+This is not participants list . This is a result list whose findings were validated.
+
+
+[04/03/2024 09:02] mctoady
+The list only has High/Med/Gas so anyone who got a payout from QA/Analysis reports is on this list but shows as zeroes, then Total = 1
+
+
+[04/03/2024 09:14] .anas_22
+Hi Joe I provided some really concerning vulnerabilities in that project like the  it allows the wallet to have no owner? Are my reports not validated or are there any problems in the C4 platforms because I did not receive any rejection mail.
+
+
+[04/03/2024 09:20] kaveyjoe
+There is no Any problem with c4 platform , c4 don't sent any confirmations mail for the submission that is  accepted or rejected.  u can check what happen to your submission when Report is published.
+
+
+[04/03/2024 12:41] nilay27
+I also submitted an issue along with the code and test showing a user being able to perform signature replay on a wallet and drain the funds via execution fee (in case there is no paymaster); it was rejected.
+I look forward to the report to understand what I missed/misunderstood. 
+
+This also means I need to push to get the backstage role so that, in the future, I can be a part of PJQA.
+
+
+[04/03/2024 16:00] .anas_22
+General question how many bug reports did you get in this competitive audit?
+
+
+[04/03/2024 16:15] mctoady
+There were around 200 issues submitted (probably ~50% gas/QA/analysis reports). Of which 3 HMs were found.
+
+{Reactions}
+🫡 
+
+[04/12/2024 19:01] itsmetechjay
+ℹ️ This channel is pending archive.   As a result, any private threads will be permanently deleted on Friday, 19 April 2024. Please make sure to grab anything you might need before then.
+
+
+[04/18/2024 20:25] itsmetechjay
+ℹ️ Reminder: this channel will be deleted in 24 hours.
+
+
+==============================================================
+Exported 100 message(s)
+==============================================================
